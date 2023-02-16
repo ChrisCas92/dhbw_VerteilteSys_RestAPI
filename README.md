@@ -6,6 +6,6 @@ Themengebiet: LAN Party Anbieter wie z.b. DreamHack
 
 Collections:
 
-Veranstaltung - "Veranstaltung Nr. , Name , Ort , Datum"
-Teilnehmer - "Teilnehmer Nr. , Name , Vorname, Sitzplatznummer"
-Angebotene Spiele - "Name, Max. Spieleranzahl, Min. Spieleranzahl, Preis pro Spieler"
+Veranstaltung - "Veranstaltung Nr., Name, Teilnehmeranzahl, Ort , StartDatum, EndDatum, Einlass, Beginn, Ende"
+Teilnehmer - "Teilnehmer Nr. , Name , Vorname, GamerTag, Sitzplatznummer"
+Angebotene Spiele - "Name, Max. Spieleranzahl, Min. Spieleranzahl, Preisgeld"
