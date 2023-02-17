@@ -5,7 +5,7 @@ import {
   getParticipants,
   addParticipant,
   newParticipantValidators,
-} from "./participantsControllers.js";
+} from "../controllers/participantsControllers.js";
 
 const router = express.Router();
 

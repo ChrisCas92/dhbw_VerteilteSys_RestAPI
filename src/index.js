@@ -1,8 +1,8 @@
 import express from "express";
 import bodyParser from "body-parser";
-import eventsRoutes from "./events/eventsRoutes.js";
-import gamesRoutes from "./games/gamesRoutes.js";
-import participantsRoutes from "./participants/participantsRoutes.js";
+import eventsRoutes from "./routes/eventsRoutes.js";
+import gamesRoutes from "./routes/gamesRoutes.js";
+import participantsRoutes from "./routes/participantsRoutes.js";
 
 // app initialization
 const app = express();

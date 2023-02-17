@@ -5,7 +5,7 @@ import {
   getGames,
   addGame,
   newGameValidators,
-} from "./gamesControllers.js";
+} from "../controllers/gamesControllers.js";
 
 const router = express.Router();
 
