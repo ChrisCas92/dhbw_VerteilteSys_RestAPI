@@ -1,0 +1,24 @@
+version: "3.4"
+
+services:
+  backend:
+    image: node:17-alpine
+    container_name: backend
+    build:
+      context: lan-management-backend
+      dockerfile: ./Dockerfile
+    ports:
+      - 4000:4000
+    volumes:
+      - ./lan-management-backend:/app
+    depends_on:
+      - mongodb
+  mongodb:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - .db/:/data/db
+    command:
+      - --quiet

@@ -1,8 +1,10 @@
 import express from "express";
 import {
-  findEvents,
-  findEventsById,
+  getEventsByName,
+  getEventsById,
   getEvents,
+  getEventsByLocation,
+  getEventsByDate,
   addEvent,
   newEventValidators,
 } from "../controllers/eventsControllers.js";
@@ -10,8 +12,10 @@ import {
 const router = express.Router();
 
 router.get("/", getEvents);
-router.get("/search", findEvents);
+router.get("/search", getEventsByName);
+router.get("/location", getEventsByLocation);
+router.get("/date", getEventsByDate);
+router.get("/:id", getEventsById);
 router.post("/add", newEventValidators, addEvent);
-router.get("/:id", findEventsById);
 
 export default router;

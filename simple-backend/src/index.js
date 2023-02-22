@@ -1,5 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
+import mongoose from "mongoose";
+
 import eventsRoutes from "./routes/eventsRoutes.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
 import participantsRoutes from "./routes/participantsRoutes.js";
@@ -24,6 +26,9 @@ app.all("*", (req, res) => {
 });
 
 // connect database
+mongoose.connect("mongodb://localhost:27017/tournament").then(() => {
+  console.log("Connected to database");
+});
 
 // URL: http://localhost:4000
 app.listen(port, () => {

@@ -1,8 +1,8 @@
 import { check, validationResult } from "express-validator";
+import { Event } from "../models/event.js";
 
-const events = [
+/*[
   {
-    id: 0,
     name: "Lock and Load 14",
     participants: 512,
     location: "6210 Sursee",
@@ -13,7 +13,6 @@ const events = [
     end: "14:00",
   },
   {
-    id: 1,
     name: "Y&F LAN-PARTY",
     participants: 40,
     location: "78467 Konstanz",
@@ -24,7 +23,6 @@ const events = [
     end: "09:00",
   },
   {
-    id: 2,
     name: "Gamesession Hannover 2023",
     participants: 218,
     location: "30827 Garbsen",
@@ -35,7 +33,6 @@ const events = [
     end: "11:00",
   },
   {
-    id: 3,
     name: "Caggtus Leipzig",
     participants: 2300,
     location: "04109 Leipzig",
@@ -45,30 +42,50 @@ const events = [
     start: "20:30",
     end: "14:00",
   },
-];
+];*/
 
-export const getEvents = (req, res) => {
+export const getEvents = async (req, res) => {
+  const events = await Event.find();
   res.status(200).send(events);
 };
 
-export const findEvents = (req, res) => {
-  let result = events.filter((event) => event.name == req.query.name);
-  res.status(200).send(result);
-};
-
-export const findEventsById = (req, res) => {
-  let event = events.find((e) => e.id == req.params.id);
+export const getEventsById = async (req, res) => {
+  let event = await Event.findById(req.params.id);
   res.status(200).send(event);
 };
 
-export const addEvent = (req, res) => {
+export const getEventsByLocation = async (req, res) => {
+  let result = await Event.find({ location: req.params.location });
+  res.status(200).send(result);
+};
+
+export const getEventsByDate = async (req, res) => {
+  let eventDate = await Event.find({ startDate: req.params.startDate });
+  res.status(200).send(eventDate);
+};
+
+export const getEventsByName = async (req, res) => {
+  let eventName = await Event.find({ name: req.params.name });
+  res.status(200).send(eventName);
+};
+
+export const addEvent = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const event = req.body;
-  events.push(event);
-  res.status(201).send(`Added ${event.name} to event collection`);
+  const events = new Event({
+    name: req.body.name,
+    participants: req.body.participants,
+    location: req.body.location,
+    startDate: req.body.startDate,
+    endDate: req.body.endDate,
+    entry: req.body.entry,
+    start: req.body.start,
+    end: req.body.end,
+  });
+
+  events.save(events).then((events) => res.status(201).send(events));
 };
 
 // attached as second param in a route
