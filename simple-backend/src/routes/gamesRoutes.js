@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", getGames);
 router.get("/search", findGames);
-router.get("/:id", findGamesById);
 router.post("/add", newGameValidators, addGame);
+router.get("/:id", findGamesById);
 
 export default router;

@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", getEvents);
 router.get("/search", findEvents);
-router.get("/:id", findEventsById);
 router.post("/add", newEventValidators, addEvent);
+router.get("/:id", findEventsById);
 
 export default router;

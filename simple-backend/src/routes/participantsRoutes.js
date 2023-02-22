@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.get("/", getParticipants);
 router.get("/search", findParticipants);
-router.get("/:id", findParticipantsById);
 router.post("/add", newParticipantValidators, addParticipant);
+router.get("/:id", findParticipantsById);
 
 export default router;
