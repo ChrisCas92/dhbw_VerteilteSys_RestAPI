@@ -55,17 +55,17 @@ export const getEventsById = async (req, res) => {
 };
 
 export const getEventsByLocation = async (req, res) => {
-  let result = await Event.find({ location: req.params.location });
+  let result = await Event.find({ location: req.query.location });
   res.status(200).send(result);
 };
 
 export const getEventsByDate = async (req, res) => {
-  let eventDate = await Event.find({ startDate: req.params.startDate });
+  let eventDate = await Event.find({ startDate: req.query.startDate });
   res.status(200).send(eventDate);
 };
 
 export const getEventsByName = async (req, res) => {
-  let eventName = await Event.find({ name: req.params.name });
+  let eventName = await Event.find({ name: req.query.name });
   res.status(200).send(eventName);
 };
 

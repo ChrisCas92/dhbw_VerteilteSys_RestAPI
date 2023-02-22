@@ -26,7 +26,7 @@ app.all("*", (req, res) => {
 });
 
 // connect database
-mongoose.connect("mongodb://localhost:27017/tournament").then(() => {
+mongoose.connect("mongodb://mongo:27017/tournament").then(() => {
   console.log("Connected to database");
 });
 

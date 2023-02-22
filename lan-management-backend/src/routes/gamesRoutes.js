@@ -1,8 +1,8 @@
 import express from "express";
 import {
-  findGames,
-  findGamesById,
   getGames,
+  getGamesById,
+  getGamesByName,
   addGame,
   newGameValidators,
 } from "../controllers/gamesControllers.js";
@@ -10,8 +10,8 @@ import {
 const router = express.Router();
 
 router.get("/", getGames);
-router.get("/search", findGames);
+router.get("/search", getGamesByName);
+router.get("/:id", getGamesById);
 router.post("/add", newGameValidators, addGame);
-router.get("/:id", findGamesById);
 
 export default router;
