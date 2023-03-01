@@ -9,3 +9,10 @@ Collections:
 Veranstaltung - "Veranstaltung Nr., Name, Teilnehmeranzahl, Ort , StartDatum, EndDatum, Einlass, Beginn, Ende"
 Teilnehmer - "Teilnehmer Nr. , Name , Vorname, GamerTag, Sitzplatznummer"
 Angebotene Spiele - "Name, Max. Spieleranzahl, Min. Spieleranzahl, Preisgeld"
+
+Starten der app
+frontend: cd simple-frontend && npm run start
+
+backend: cd simple-backend && npm run start
+
+all containers (frontend, backend, mongo): cd simple-backend && npm run d-up

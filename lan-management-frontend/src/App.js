@@ -31,7 +31,9 @@ class App extends React.Component {
           {/* generates a div for every entry */}
           {this.state.parties.map((party, key) => (
             <div key={key}>
-              {party.title} by {party.author}
+              <h2>{party.name}</h2>
+              <p> Findet statt in: {party.location} </p>
+              <p> Teilnehmerzahl: {party.participants} </p>
             </div>
           ))}
         </div>
