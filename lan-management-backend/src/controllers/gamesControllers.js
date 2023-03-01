@@ -33,6 +33,7 @@ import { Game } from "../models/game.js";
 ];*/
 
 export const getGames = async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "http://localhost:3000");
   const games = await Game.find();
   res.status(200).send(games);
 };
