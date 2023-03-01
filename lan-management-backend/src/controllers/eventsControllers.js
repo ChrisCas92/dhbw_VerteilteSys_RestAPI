@@ -45,6 +45,7 @@ import { Event } from "../models/event.js";
 ];*/
 
 export const getEvents = async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "http://localhost:3000");
   const events = await Event.find();
   res.status(200).send(events);
 };
