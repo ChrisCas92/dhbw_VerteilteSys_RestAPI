@@ -25,7 +25,7 @@ export const getParticipantGamerTag = async (req, res) => {
   res.status(200).send(participantGamerTag);
 };
 
-export const addParticipiants = async (req, res) => {
+export const addParticipant = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -43,7 +43,7 @@ export const addParticipiants = async (req, res) => {
 };
 
 // attached as second param in a route
-export const newEventDetailsValidators = [
+export const newParticipantValidators = [
   check("firstName").notEmpty().withMessage("First name is required"),
   check("lastName").notEmpty().withMessage("Last name is required"),
   check("gamerTag").notEmpty().withMessage("Gamertag is required"),

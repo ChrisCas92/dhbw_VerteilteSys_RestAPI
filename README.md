@@ -15,4 +15,4 @@ frontend: cd simple-frontend && npm run start
 
 backend: cd simple-backend && npm run start
 
-all containers (frontend, backend, mongo): cd simple-backend && npm run d-up
+all containers (frontend, backend, mongo): cd lan-management-backend && npm run d-up
