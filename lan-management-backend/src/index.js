@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import swaggerUi from "swagger-ui-express";
+
 import eventsRoutes from "./routes/eventsRoutes.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
 import participantsRoutes from "./routes/participantsRoutes.js";

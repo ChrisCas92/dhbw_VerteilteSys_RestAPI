@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+//const fetch = require("node-fetch");
 
 export async function fetchAllParties() {
   return await fetch("http://localhost:4000/events", {
@@ -18,11 +18,11 @@ export async function addParty(name, location, participants) {
     headers: {
       "Content-Type": "application/json",
     },
-    body: {
+    body: JSON.stringify({
       name: name,
       location: location,
       participants: participants,
-    },
+    }),
   })
     .then((res) => {
       return res.json();

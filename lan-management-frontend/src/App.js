@@ -17,6 +17,7 @@ class App extends React.Component {
   async fetchDisplayData() {
     let data = await fetchAllParties();
     this.setState({ parties: data });
+    console.log(data);
   }
 
   // this is displayed on the screen
@@ -34,6 +35,8 @@ class App extends React.Component {
               <h2>{party.name}</h2>
               <p> Findet statt in: {party.location} </p>
               <p> Teilnehmerzahl: {party.participants} </p>
+              <p> Startdatum: {party.startDate} </p>
+              <p> Enddatum: {party.endDate} </p>
             </div>
           ))}
         </div>
