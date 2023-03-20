@@ -3,14 +3,14 @@ import { Event } from "../models/event.js";
 
 /*[
   {
-    name: "Lock and Load 14",
-    participants: 512,
-    location: "6210 Sursee",
-    startDate: "2023-02-24",
-    endDate: "2023-02-26",
-    entry: "14:00",
-    start: "16:00",
-    end: "14:00",
+    "name": "Lock and Load 14",
+    "location": "6210 Sursee",
+    "startDate": "2023-02-24",
+    "endDate": "2023-02-26",
+    "entry": "14:00",
+    "start": "16:00",
+    "end": "14:00",
+    "participants": 512
   },
   {
     name: "Y&F LAN-PARTY",

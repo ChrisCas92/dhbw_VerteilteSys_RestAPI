@@ -8,13 +8,13 @@ class App extends React.Component {
     this.state = {
       parties: [],
     };
-    this.fetchDisplayData = this.fetchDisplayData.bind(this);
+    this.fetchDisplayParties = this.fetchDisplayParties.bind(this);
   }
 
   // requests and waits for data by calling RestClient's
   // fetchAllBooks. as soon as the data is there it is set
   // as a state
-  async fetchDisplayData() {
+  async fetchDisplayParties() {
     let data = await fetchAllParties();
     this.setState({ parties: data });
     console.log(data);
@@ -25,7 +25,7 @@ class App extends React.Component {
     return (
       <div>
         <div id="title">Lan Parties </div>
-        <button id="fetcher" onClick={this.fetchDisplayData}>
+        <button id="fetcher" onClick={this.fetchDisplayParties}>
           Welche Lan Parties gibt es in deiner Umgebung?
         </button>
         <div className="data">
