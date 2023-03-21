@@ -35,8 +35,12 @@ class App extends React.Component {
               <h2>{party.name}</h2>
               <p> Findet statt in: {party.location} </p>
               <p> Teilnehmerzahl: {party.participants} </p>
-              <p> Startdatum: {party.startDate} </p>
-              <p> Enddatum: {party.endDate} </p>
+              <p>
+                Eventzeitraum: {party.startDate} - {party.endDate}
+              </p>
+              <p> Einlass: {party.entry} </p>
+              <p> Eventstart: {party.start} </p>
+              <p> Eventende: {party.end} </p>
             </div>
           ))}
         </div>

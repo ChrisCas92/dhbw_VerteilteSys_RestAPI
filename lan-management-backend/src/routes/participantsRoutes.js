@@ -5,7 +5,11 @@ import {
   getParticipantLastName,
   getParticipantGamerTag,
   addParticipant,
-  newParticipantValidators,
+  patchParticipant,
+  deleteParticipantById,
+  deleteAllParticipants,
+  newParticipantValidator,
+  patchParticipantValidator,
 } from "../controllers/participantsControllers.js";
 
 const router = express.Router();
@@ -13,7 +17,14 @@ const router = express.Router();
 router.get("/", getParticipants);
 router.get("/search", getParticipantLastName);
 router.get("/gamerTag", getParticipantGamerTag);
-router.get("/:id", getParticipantById);
-router.post("/add", newParticipantValidators, addParticipant);
+router.get("/participantid", getParticipantById);
+router.post("/add", newParticipantValidator, addParticipant);
+router.patch("/patch", patchParticipantValidator, patchParticipant);
+router.delete(
+  "/deleteParticipantById",
+  patchParticipantValidator,
+  deleteParticipantById
+);
+router.delete("/deleteAllParticipants", deleteAllParticipants);
 
 export default router;

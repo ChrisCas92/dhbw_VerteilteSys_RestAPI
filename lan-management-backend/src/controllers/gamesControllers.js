@@ -39,8 +39,13 @@ export const getGames = async (req, res) => {
 };
 
 export const getGamesById = async (req, res) => {
-  let game = await Game.findById(req.params.id);
-  res.status(200).send(game);
+  let gameid = req.query.gameId;
+  let game = await Game.findOne({ gameId: gameid });
+  if (!game) {
+    res.status(404).send("Game not found");
+  } else {
+    res.status(200).send(game);
+  }
 };
 
 export const getGamesByName = async (req, res) => {
@@ -54,6 +59,7 @@ export const addGame = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   const game = new Game({
+    gameId: req.body.gameId,
     name: req.body.name,
     minPlayers: req.body.minPlayers,
     maxPlayers: req.body.maxPlayers,
@@ -69,18 +75,18 @@ export const patchGame = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   try {
-    let result = await Game.find({ name: req.body.name });
+    let result = await Game.find({ gameId: req.query.gameId });
     if (result.length === 0) {
-      res.status(404).send("Game not found");
+      res.status(404).send("GameID not found or invalid");
     } else {
       let response = await Game.findOneAndUpdate(
-        { name: req.body.name },
+        { gameId: req.query.gameId },
         {
           $set: {
-            name: req.body.newName,
-            minPlayers: req.body.minPlayers,
-            maxPlayers: req.body.maxPlayers,
-            priceMoney: req.body.priceMoney,
+            name: req.query.name,
+            minPlayers: req.query.minPlayers,
+            maxPlayers: req.query.maxPlayers,
+            priceMoney: req.query.priceMoney,
           },
         },
         { new: true }
@@ -93,8 +99,37 @@ export const patchGame = async (req, res) => {
   }
 };
 
-// attached as second param in a route
+export const deleteGameById = async (req, res) => {
+  try {
+    let result = await Game.find({ gameId: req.query.gameId });
+    if (result.length === 0) {
+      res.status(404).send("GameID not found or invalid");
+    } else {
+      let response = await Game.findOneAndDelete({ gameId: req.query.gameId });
+      res.status(200).send(response);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting game");
+  }
+};
+
+export const deleteAllGames = async (req, res) => {
+  try {
+    let response = await Game.deleteMany({});
+    res.status(200).send(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting all games");
+  }
+};
+
+// attached as third param in a route for the patch method
 export const patchGameValidator = [
+  check("gameId")
+    .optional({ nullable: true })
+    .notEmpty()
+    .withMessage("Game ID is required"),
   check("name")
     .optional({ nullable: true })
     .notEmpty()
@@ -111,6 +146,7 @@ export const patchGameValidator = [
 
 // attached as second param in a route
 export const newGameValidators = [
+  check("gameId").notEmpty().withMessage("Game ID is required"),
   check("name").notEmpty().withMessage("Name of the Game is required"),
   check("minPlayers")
     .notEmpty()

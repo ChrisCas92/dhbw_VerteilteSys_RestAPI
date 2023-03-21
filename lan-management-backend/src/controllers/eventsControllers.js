@@ -51,8 +51,13 @@ export const getEvents = async (req, res) => {
 };
 
 export const getEventsById = async (req, res) => {
-  let event = await Event.findById(req.params.id);
-  res.status(200).send(event);
+  let eventId = req.query.eventId;
+  let event = await Event.findOne({ eventId: eventId });
+  if (!event) {
+    res.status(404).send("Event not found");
+  } else {
+    res.status(200).send(event);
+  }
 };
 
 export const getEventsByLocation = async (req, res) => {
@@ -76,6 +81,7 @@ export const addEvent = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
   const events = new Event({
+    eventId: req.body.eventId,
     name: req.body.name,
     participants: req.body.participants,
     location: req.body.location,
@@ -85,12 +91,95 @@ export const addEvent = async (req, res) => {
     start: req.body.start,
     end: req.body.end,
   });
-
   events.save(events).then((events) => res.status(201).send(events));
 };
 
+export const patchEvent = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  try {
+    let result = await Event.find({ eventId: req.query.eventId });
+    if (result.length === 0) {
+      res.status(404).send("EventID not found or invalid");
+    } else {
+      let response = await Event.findOneAndUpdate(
+        { eventId: req.query.eventId },
+        {
+          $set: {
+            name: req.query.name,
+            location: req.query.location,
+            startDate: req.query.startDate,
+            endDate: req.query.endDate,
+            entry: req.query.entry,
+            start: req.query.start,
+            end: req.query.end,
+            participants: req.query.participants,
+          },
+        },
+        { new: true }
+      );
+      res.status(200).send(response);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error updating game");
+  }
+};
+
+export const deleteEventById = async (req, res) => {
+  try {
+    let result = await Event.find({ gameId: req.query.eventId });
+    if (result.length === 0) {
+      res.status(404).send("EventID not found or invalid");
+    } else {
+      let response = await Event.findOneAndDelete({
+        eventId: req.query.eventId,
+      });
+      res.status(200).send(response);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting event");
+  }
+};
+
+export const deleteAllEvents = async (req, res) => {
+  try {
+    let response = await Event.deleteMany({});
+    res.status(200).send(response);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting all events");
+  }
+};
+
+// attached as third param in a route for the patch method
+export const patchEventValidator = [
+  check("eventId")
+    .optional({ nullable: true })
+    .notEmpty()
+    .withMessage("Event ID is required"),
+  check("name")
+    .optional({ nullable: true })
+    .notEmpty()
+    .withMessage("Name of the Event is required"),
+  check("participants")
+    .optional({ nullable: true })
+    .notEmpty()
+    .withMessage("Number of participants is required"),
+  check("location")
+    .optional({ nullable: true })
+    .notEmpty()
+    .withMessage("Postalcode and name of the location is required"),
+];
+
 // attached as second param in a route
-export const newEventValidators = [
+export const newEventValidator = [
+  check("eventId")
+    .notEmpty()
+    .withMessage("Event ID is required and should be not 0"),
   check("name").notEmpty().withMessage("Name of the event is required"),
   check("participants")
     .notEmpty()
