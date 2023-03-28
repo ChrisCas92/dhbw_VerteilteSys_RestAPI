@@ -6,13 +6,13 @@ Themengebiet: LAN Party Anbieter wie z.b. DreamHack
 
 # Konkretes Anwendungsszenario des entwickelten Service mit möglicher Architektureinbindung
 
-Der Service bietet eine Übersicht aller in Deutschland stattfindenden LAN-Parties mit Titel und Veranstaltungsort mit einem einfach Frontend zur visuellen Darstellung. So kann jeder Nutzer die LAN-Parties in Deutschland sehen und für sich über für Ihn ansprechende Events informieren. 
+Der Service bietet eine Übersicht aller in Deutschland stattfindenden LAN-Parties mit Titel und Veranstaltungsort mit einem einfach Frontend zur visuellen Darstellung. So kann jeder Nutzer die LAN-Parties in Deutschland sehen und für sich über für Ihn ansprechende Events informieren.
 
 Eine mögliche Architekturnutzung des Services wäre in einer 3-Schichten Architektur - in der ein erweitertes Frontend das sortieren und filtern der Daten ohne eine weitere Kommunikation mit dem Backend erlaubt und in welcher die Datenbank in einem eigenen Container laufen würde damit folgende 3 Schichten entstehen:
 
-* Frontend
-* Backend
-* Database
+- Frontend
+- Backend
+- Database
 
 # Mögliche Probleme des Service bei Verwendung von mehreren Parteien
 
@@ -40,13 +40,10 @@ Der Dienst sollte so entwickelt und konfiguriert werden, dass er leicht skaliert
 
 ## Sicherheit
 
-Eine REST-API kann eine Vielzahl von Sicherheitsrisiken bergen, wie z.B. Angriffe durch unberechtigten Zugriff, Datenmanipulation und Denial of Service (DoS)-Angriffe. Um diese Risiken zu minimieren, sollten Sicherheitsmaßnahmen wie Authentifizierung, Autorisierung, Verschlüsselung und Validierung der Eingaben in den Service implementiert werden. Zurzeit ist eine Veränderung der Daten ohne Authentifizierung möglich. 
-
-
-
+Eine REST-API kann eine Vielzahl von Sicherheitsrisiken bergen, wie z.B. Angriffe durch unberechtigten Zugriff, Datenmanipulation und Denial of Service (DoS)-Angriffe. Um diese Risiken zu minimieren, sollten Sicherheitsmaßnahmen wie Authentifizierung, Autorisierung, Verschlüsselung und Validierung der Eingaben in den Service implementiert werden. Zurzeit ist eine Veränderung der Daten ohne Authentifizierung möglich.
 
 # Folgende 3 Collections existieren im Service:
 
-* Veranstaltung - "Veranstaltung Nr., Name, Teilnehmeranzahl, Ort , StartDatum, EndDatum, Einlass, Beginn, Ende"
-* Teilnehmer - "Teilnehmer Nr. , Name , Vorname, GamerTag, Sitzplatznummer"
-* Angebotene Spiele - "Name, Max. Spieleranzahl, Min. Spieleranzahl, Preisgeld"
+- Veranstaltung - "Veranstaltung Nr., Name, Teilnehmeranzahl, Ort , StartDatum, EndDatum, Einlass, Beginn, Ende"
+- Teilnehmer - "Teilnehmer Nr. , Name , Vorname, GamerTag, Sitzplatznummer"
+- Angebotene Spiele - "Name, Max. Spieleranzahl, Min. Spieleranzahl, Preisgeld"
