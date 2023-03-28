@@ -58,15 +58,18 @@ export const addGame = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const game = new Game({
-    gameId: req.body.gameId,
-    name: req.body.name,
-    minPlayers: req.body.minPlayers,
-    maxPlayers: req.body.maxPlayers,
-    priceMoney: req.body.priceMoney,
-  });
 
-  game.save(game).then((game) => res.status(201).send(game));
+  await checkDuplicateGameId(req, res, async () => {
+    const game = new Game({
+      gameId: req.body.gameId,
+      name: req.body.name,
+      minPlayers: req.body.minPlayers,
+      maxPlayers: req.body.maxPlayers,
+      priceMoney: req.body.priceMoney,
+    });
+
+    game.save(game).then((game) => res.status(201).send(game));
+  });
 };
 
 export const patchGame = async (req, res) => {
@@ -124,6 +127,23 @@ export const deleteAllGames = async (req, res) => {
   }
 };
 
+//Method to check if game ID already exists in the database
+export const checkDuplicateGameId = async (req, res, next) => {
+  try {
+    const gameId = req.body.gameId;
+    const game = await Game.findOne({ gameId });
+    if (game) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Game ID already exists" }] });
+    }
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("gameId check failed");
+  }
+};
+
 // attached as third param in a route for the patch method
 export const patchGameValidator = [
   check("gameId")
@@ -146,12 +166,20 @@ export const patchGameValidator = [
 
 // attached as second param in a route
 export const newGameValidators = [
-  check("gameId").notEmpty().withMessage("Game ID is required"),
+  check("gameId")
+    .notEmpty()
+    .withMessage("Game ID is required")
+    .isInt({ min: 1, max: 1000 })
+    .withMessage("Game ID must be between 1 and 1000"),
   check("name").notEmpty().withMessage("Name of the Game is required"),
   check("minPlayers")
     .notEmpty()
-    .withMessage("Number of the minimum players required is required"),
+    .withMessage("Number of the minimum players required is required")
+    .isInt({ min: 1, max: 100 })
+    .withMessage("Minimum players must be between 1 and 100"),
   check("maxPlayers")
     .notEmpty()
-    .withMessage("Number of the maximum players required is required"),
+    .withMessage("Number of the maximum players required is required")
+    .isInt({ min: 1, max: 300 })
+    .withMessage("Maximum players must be between 1 and 100"),
 ];

@@ -80,18 +80,21 @@ export const addEvent = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const events = new Event({
-    eventId: req.body.eventId,
-    name: req.body.name,
-    participants: req.body.participants,
-    location: req.body.location,
-    startDate: req.body.startDate,
-    endDate: req.body.endDate,
-    entry: req.body.entry,
-    start: req.body.start,
-    end: req.body.end,
+
+  await checkDuplicateEventId(req, res, async () => {
+    const events = new Event({
+      eventId: req.body.eventId,
+      name: req.body.name,
+      participants: req.body.participants,
+      location: req.body.location,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      entry: req.body.entry,
+      start: req.body.start,
+      end: req.body.end,
+    });
+    events.save(events).then((events) => res.status(201).send(events));
   });
-  events.save(events).then((events) => res.status(201).send(events));
 };
 
 export const patchEvent = async (req, res) => {
@@ -155,6 +158,23 @@ export const deleteAllEvents = async (req, res) => {
   }
 };
 
+//Method to check if event ID already exists in the database
+export const checkDuplicateEventId = async (req, res, next) => {
+  try {
+    const eventId = req.body.eventId;
+    const event = await Event.findOne({ eventId });
+    if (event) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Event ID already exists" }] });
+    }
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("eventId check failed");
+  }
+};
+
 // attached as third param in a route for the patch method
 export const patchEventValidator = [
   check("eventId")
@@ -180,11 +200,23 @@ export const newEventValidator = [
   check("eventId")
     .notEmpty()
     .withMessage("Event ID is required and should be not 0"),
-  check("name").notEmpty().withMessage("Name of the event is required"),
+  check("name")
+    .notEmpty()
+    .withMessage("Name of the event is required")
+    .isLength(4, 100)
+    .withMessage(
+      "Name of the event must be at least 4 and max 100 characters long"
+    ),
   check("participants")
     .notEmpty()
-    .withMessage("Number of participants is required"),
+    .withMessage("Number of participants is required")
+    .isLength(1, 4)
+    .withMessage("Number of participants must be at most 4 digits long"),
   check("location")
     .notEmpty()
-    .withMessage("Postalcode and name of the location is required"),
+    .withMessage("Postalcode and name of the location is required")
+    .isLength(4, 100)
+    .withMessage(
+      "Postalcode and name of the location must be at least 4 and max 100 characters long"
+    ),
 ];

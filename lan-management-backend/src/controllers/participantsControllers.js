@@ -35,17 +35,20 @@ export const addParticipant = async (req, res) => {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  const participant = new Participant({
-    participantId: req.body.participantId,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    gamerTag: req.body.gamerTag,
-    seatNumber: req.body.seatNumber,
-  });
 
-  participant
-    .save(participant)
-    .then((participant) => res.status(201).send(participant));
+  await checkDuplicateParticipantId(req, res, async () => {
+    const participant = new Participant({
+      participantId: req.body.participantId,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      gamerTag: req.body.gamerTag,
+      seatNumber: req.body.seatNumber,
+    });
+
+    participant
+      .save(participant)
+      .then((participant) => res.status(201).send(participant));
+  });
 };
 
 export const patchParticipant = async (req, res) => {
@@ -109,6 +112,23 @@ export const deleteAllParticipants = async (req, res) => {
   }
 };
 
+//Method to check if the participant ID already exists in the database
+export const checkDuplicateParticipantId = async (req, res, next) => {
+  try {
+    const participantId = req.body.participantId;
+    const participant = await Participant.findOne({ participantId });
+    if (participant) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Participant ID already exists" }] });
+    }
+    next();
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("participantId check failed");
+  }
+};
+
 // attached as third param in a route for the patch method
 export const patchParticipantValidator = [
   check("participantId")
@@ -132,7 +152,15 @@ export const patchParticipantValidator = [
 // attached as second param in a route
 export const newParticipantValidator = [
   check("participantId").notEmpty().withMessage("Participant ID is required"),
-  check("firstName").notEmpty().withMessage("First name is required"),
-  check("lastName").notEmpty().withMessage("Last name is required"),
+  check("firstName")
+    .notEmpty()
+    .withMessage("First name is required")
+    .isLength({ min: 2 })
+    .withMessage("First name must be at least 2 characters long"),
+  check("lastName")
+    .notEmpty()
+    .withMessage("Last name is required")
+    .isLength({ min: 2 })
+    .withMessage("Last name must be at least 2 characters long"),
   check("gamerTag").notEmpty().withMessage("Gamertag is required"),
 ];
